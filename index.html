@@ -383,14 +383,24 @@
     }
     .nav-name {
       font-family: var(--ff-head);
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      color: var(--white);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #e8d080 0%, #D4AF37 35%, #F0D060 55%, #C9A84C 80%, #e0c050 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      transition: var(--transition);
     }
-    .nav-name span {
-      color: var(--gold);
+    .nav-brand:hover .nav-name {
+      background: linear-gradient(135deg, #F0D060 0%, #e8d080 40%, #D4AF37 70%, #F0D060 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: brightness(1.15);
     }
+    .nav-name span { -webkit-text-fill-color: inherit; }
     .nav-links {
       display: flex;
       gap: 2.5rem;
