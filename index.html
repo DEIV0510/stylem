@@ -689,11 +689,20 @@
     }
     .collection-card {
       position: relative;
-      background: var(--black-2);
+      background: #0c0a08;
       overflow: hidden;
       cursor: pointer;
       aspect-ratio: 3 / 4;
-      transition: var(--transition);
+      will-change: transform;
+      transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .collection-card:hover {
+      box-shadow:
+        calc(var(--ry, 0deg) * 2.5) calc(var(--rx, 0deg) * -2.5) 80px rgba(0,0,0,0.7),
+        0 0 50px rgba(212,175,55,0.10);
     }
     .collection-card::before {
       content: '';
@@ -701,98 +710,159 @@
       inset: 0;
       border: 1px solid transparent;
       transition: border-color 0.4s ease;
-      z-index: 3;
+      z-index: 5;
       pointer-events: none;
     }
-    .collection-card:hover::before {
-      border-color: rgba(212, 175, 55, 0.6);
-    }
+    .collection-card:hover::before { border-color: rgba(212,175,55,0.55); }
+
+    /* ── Card real photo ── */
     .card-visual {
       position: absolute;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.6s ease;
+      overflow: hidden;
     }
-    .collection-card:hover .card-visual {
-      transform: scale(1.05);
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      transform: scale(1.1) translate(var(--tx, 0px), var(--ty, 0px));
+      transition: transform 0.08s linear;
+      will-change: transform;
+      display: block;
     }
-    /* Fashion silhouette visuals */
-    .card-visual svg {
-      opacity: 0.35;
-      transition: opacity 0.4s ease;
+    /* Women's image: white bg, tone down */
+    .card-img-mujer {
+      filter: brightness(0.72) contrast(1.12) saturate(1.1);
+      object-position: center 8%;
     }
-    .collection-card:hover .card-visual svg {
-      opacity: 0.50;
+    /* Children's flat lay: beige bg, moody */
+    .card-img-ninos {
+      filter: brightness(0.65) contrast(1.18) saturate(0.85);
+      object-position: center 40%;
     }
+
+    /* ── Gradient overlay (bottom-heavy) ── */
     .card-gradient {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(12,11,9,0.97) 0%, rgba(12,11,9,0.35) 45%, transparent 70%);
+      background: linear-gradient(
+        to top,
+        rgba(5,4,3,0.98) 0%,
+        rgba(8,7,5,0.85) 28%,
+        rgba(8,7,5,0.25) 55%,
+        transparent 78%
+      );
       z-index: 2;
     }
+
+    /* ── Ambient glow radial ── */
     .card-glow {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 110%, rgba(212,175,55,0.12) 0%, transparent 60%);
+      background: radial-gradient(ellipse at 50% 115%, rgba(212,175,55,0.18) 0%, transparent 58%);
       opacity: 0;
       z-index: 1;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.5s ease;
     }
     .collection-card:hover .card-glow { opacity: 1; }
+
+    /* ── Gold shimmer sweep ── */
+    .card-shimmer {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background: linear-gradient(
+        118deg,
+        transparent 22%,
+        rgba(212,175,55,0.22) 50%,
+        transparent 78%
+      );
+      background-size: 300% 300%;
+      background-position: 200% 200%;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .collection-card:hover .card-shimmer {
+      opacity: 1;
+      animation: cardShimmer 2.4s ease-in-out infinite;
+    }
+    @keyframes cardShimmer {
+      0%   { background-position: 220% 220%; }
+      100% { background-position: -100% -100%; }
+    }
+
+    /* ── Card text ── */
     .card-content {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      z-index: 4;
+      z-index: 6;
       padding: 2rem 1.8rem;
-      transform: translateY(6px);
-      transition: transform 0.4s ease;
+      transform: translateY(8px);
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
     }
     .collection-card:hover .card-content { transform: translateY(0); }
     .card-tag {
-      font-size: 0.55rem;
-      letter-spacing: 0.3em;
+      font-size: 0.52rem;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 0.5rem;
+      opacity: 0.9;
     }
     .card-title {
       font-family: var(--ff-head);
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: 300;
       color: var(--white);
-      line-height: 1.1;
-      margin-bottom: 0.6rem;
+      line-height: 1.05;
+      margin-bottom: 0.65rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
     }
     .card-desc {
       font-size: 0.72rem;
       color: var(--gray-3);
       letter-spacing: 0.03em;
-      line-height: 1.6;
+      line-height: 1.65;
       margin-bottom: 1.2rem;
     }
     .card-link {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--gold);
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.35s ease;
     }
     .collection-card:hover .card-link { opacity: 1; }
     .card-link::after {
       content: '→';
-      transition: transform 0.3s ease;
+      display: inline-block;
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
     }
-    .collection-card:hover .card-link::after { transform: translateX(4px); }
+    .collection-card:hover .card-link::after { transform: translateX(5px); }
+
+    /* ── 3D entrance override for cards ── */
+    .collection-card.fade-in {
+      opacity: 0;
+      transform: perspective(900px) rotateX(18deg) translateY(70px) scale(0.95);
+      filter: blur(6px);
+      transition: opacity 0.95s ease, transform 1.05s cubic-bezier(0.16,1,0.3,1), filter 0.95s ease, box-shadow 0.5s ease;
+    }
+    .collection-card.fade-in.visible {
+      opacity: 1;
+      transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(0) scale(1);
+      filter: blur(0);
+    }
+
     /* Hombre card bg */
-    .card-hombre { background: linear-gradient(145deg, #19170f, #211e13); }
-    .card-mujer  { background: linear-gradient(145deg, #141220, #1c192a); }
-    .card-ninos  { background: linear-gradient(145deg, #161914, #1e221a); }
+    .card-hombre { background: #0e0c0a; }
+    .card-mujer  { background: #0d0c14; }
+    .card-ninos  { background: #0c100d; }
 
     /* ─── FEATURES ─── */
     #features {
@@ -994,17 +1064,61 @@
       transform: scale(1.04);
     }
     .lookbook-visual svg { opacity: 0.30; }
+
+    /* ── Real photo in lookbook ── */
+    .lookbook-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+      transform: scale(1.06);
+      transition: transform 0.85s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease;
+      will-change: transform;
+    }
+    .lookbook-item:hover .lookbook-img { transform: scale(1.14); }
+    /* Per-image colour grading */
+    .lb-img-mujer  { filter: brightness(0.78) contrast(1.1) saturate(1.05); object-position: center 12%; }
+    .lb-img-hombre { filter: brightness(0.88) contrast(1.08) saturate(1.02); object-position: center center; }
+    .lb-img-ninos  { filter: brightness(0.72) contrast(1.15) saturate(0.88); object-position: center 38%; }
+
+    /* Permanent dark vignette on photo items so text is always readable */
+    .lb-has-photo .lookbook-overlay {
+      background: linear-gradient(to top,
+        rgba(5,4,3,0.92) 0%,
+        rgba(5,4,3,0.38) 45%,
+        rgba(0,0,0,0.18) 100%
+      );
+      opacity: 0.55;
+      transition: opacity 0.45s ease;
+    }
+    .lb-has-photo:hover .lookbook-overlay { opacity: 1; }
+
+    /* Reveal animation for lookbook items */
+    @keyframes lbReveal {
+      from { opacity:0; transform:scale(0.92); filter:blur(10px) brightness(0.6); }
+      to   { opacity:1; transform:scale(1);    filter:blur(0)   brightness(1); }
+    }
+    .lookbook-item.fade-in.visible { animation: lbReveal 0.85s cubic-bezier(0.16,1,0.3,1) both; }
+    .lookbook-item.fade-in-delay-1.visible { animation-delay:0.05s; }
+    .lookbook-item.fade-in-delay-2.visible { animation-delay:0.15s; }
+    .lookbook-item.fade-in-delay-3.visible { animation-delay:0.25s; }
+    .lookbook-item.fade-in-delay-4.visible { animation-delay:0.35s; }
+    .lookbook-item.fade-in-delay-5.visible { animation-delay:0.45s; }
+    .lookbook-item.fade-in-delay-6.visible { animation-delay:0.55s; }
+
     .lookbook-overlay {
       position: absolute;
       inset: 0;
       background: rgba(10,10,10,0.5);
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.45s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
       gap: 0.5rem;
+      z-index: 2;
     }
     .lookbook-item:hover .lookbook-overlay { opacity: 1; }
     .lookbook-overlay-icon {
@@ -1472,15 +1586,11 @@
       <!-- Hombre -->
       <article class="collection-card card-hombre fade-in fade-in-delay-1" role="listitem">
         <div class="card-visual">
-          <svg width="260" height="360" viewBox="0 0 260 360" fill="none" aria-hidden="true">
-            <!-- Suit silhouette -->
-            <rect x="95" y="0" width="70" height="80" rx="35" fill="#D4AF37"/>
-            <path d="M40 100 L95 85 L130 130 L165 85 L220 100 L240 280 L190 290 L180 200 L130 220 L80 200 L70 290 L20 280 Z" fill="#D4AF37"/>
-            <path d="M95 85 L130 130 L165 85 L150 250 L110 250 Z" fill="#C9A84C" opacity="0.6"/>
-          </svg>
+          <img src="ropahombreniño.png" class="card-img" alt="Colección masculina STYLEM — blazer, camisas y pantalones premium" loading="lazy" />
         </div>
         <div class="card-gradient"></div>
         <div class="card-glow"></div>
+        <div class="card-shimmer"></div>
         <div class="card-content">
           <div class="card-tag">Colección Masculina</div>
           <h3 class="card-title">Hombre</h3>
@@ -1492,15 +1602,11 @@
       <!-- Mujer -->
       <article class="collection-card card-mujer fade-in fade-in-delay-2" role="listitem">
         <div class="card-visual">
-          <svg width="220" height="380" viewBox="0 0 220 380" fill="none" aria-hidden="true">
-            <!-- Dress silhouette -->
-            <ellipse cx="110" cy="45" rx="38" ry="42" fill="#D4AF37"/>
-            <path d="M72 90 L38 110 L20 200 L80 210 L60 380 L160 380 L140 210 L200 200 L182 110 L148 90 L110 130 Z" fill="#D4AF37"/>
-            <path d="M110 130 L80 210 L140 210 Z" fill="#C9A84C" opacity="0.5"/>
-          </svg>
+          <img src="vestidos mujer.png" class="card-img card-img-mujer" alt="Colección femenina STYLEM — faldas, vestidos y conjuntos elegantes" loading="lazy" />
         </div>
         <div class="card-gradient"></div>
         <div class="card-glow"></div>
+        <div class="card-shimmer"></div>
         <div class="card-content">
           <div class="card-tag">Colección Femenina</div>
           <h3 class="card-title">Mujer</h3>
@@ -1512,15 +1618,11 @@
       <!-- Niños -->
       <article class="collection-card card-ninos fade-in fade-in-delay-3" role="listitem">
         <div class="card-visual">
-          <svg width="200" height="320" viewBox="0 0 200 320" fill="none" aria-hidden="true">
-            <!-- Child silhouette -->
-            <circle cx="100" cy="45" r="38" fill="#D4AF37"/>
-            <path d="M55 85 L38 95 L25 180 L70 185 L60 320 L140 320 L130 185 L175 180 L162 95 L145 85 L100 115 Z" fill="#D4AF37"/>
-            <rect x="60" y="85" width="80" height="8" rx="2" fill="#C9A84C" opacity="0.5"/>
-          </svg>
+          <img src="conjuntoniño.png" class="card-img card-img-ninos" alt="Colección infantil STYLEM — conjuntos elegantes para niños" loading="lazy" />
         </div>
         <div class="card-gradient"></div>
         <div class="card-glow"></div>
+        <div class="card-shimmer"></div>
         <div class="card-content">
           <div class="card-tag">Colección Infantil</div>
           <h3 class="card-title">Niños</h3>
@@ -1624,69 +1726,63 @@
       <p class="section-desc" style="margin: 0.5rem auto 0; text-align: center;">Cada pieza cuenta una historia. Descubre nuestras combinaciones más elegantes.</p>
     </div>
     <div class="lookbook-grid" role="list">
-      <div class="lookbook-item lb-bg-1 fade-in fade-in-delay-1" role="listitem">
+      <!-- 1: Mujer portrait (tall-left) -->
+      <div class="lookbook-item lb-bg-1 lb-has-photo fade-in fade-in-delay-1" role="listitem">
         <div class="lookbook-visual">
-          <svg width="180" height="280" viewBox="0 0 180 280" fill="none" aria-hidden="true"><path d="M45 40 L90 20 L135 40 L140 160 L90 180 L40 160 Z" fill="#D4AF37" opacity="0.6"/><rect x="70" y="160" width="40" height="120" fill="#C9A84C" opacity="0.4"/></svg>
+          <img src="vestidos mujer.png" class="lookbook-img lb-img-mujer" alt="Look femenino STYLEM" loading="lazy" style="object-position:left 12%;" />
         </div>
         <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
+          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
           <span class="lookbook-overlay-text">Look Ejecutivo</span>
         </div>
       </div>
-      <div class="lookbook-item lb-bg-2 fade-in fade-in-delay-2" role="listitem">
+      <!-- 2: Hombre wide -->
+      <div class="lookbook-item lb-bg-2 lb-has-photo fade-in fade-in-delay-2" role="listitem">
         <div class="lookbook-visual">
-          <svg width="160" height="200" viewBox="0 0 160 200" fill="none" aria-hidden="true"><ellipse cx="80" cy="50" rx="30" ry="35" fill="#D4AF37" opacity="0.5"/><path d="M30 85 L80 100 L130 85 L120 200 L40 200 Z" fill="#D4AF37" opacity="0.4"/></svg>
+          <img src="ropahombreniño.png" class="lookbook-img lb-img-hombre" alt="Look masculino STYLEM" loading="lazy" style="object-position:center 30%;" />
         </div>
         <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <span class="lookbook-overlay-text">Outfit Casual</span>
+          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <span class="lookbook-overlay-text">Outfit Premium</span>
         </div>
       </div>
-      <div class="lookbook-item lb-bg-3 fade-in fade-in-delay-3" role="listitem">
+      <!-- 3: Niños wide -->
+      <div class="lookbook-item lb-bg-3 lb-has-photo fade-in fade-in-delay-3" role="listitem">
         <div class="lookbook-visual">
-          <svg width="160" height="200" viewBox="0 0 160 200" fill="none" aria-hidden="true"><circle cx="80" cy="40" r="28" fill="#D4AF37" opacity="0.5"/><path d="M25 70 L55 75 L80 110 L105 75 L135 70 L125 200 L35 200 Z" fill="#D4AF37" opacity="0.4"/></svg>
+          <img src="conjuntoniño.png" class="lookbook-img lb-img-ninos" alt="Conjunto infantil STYLEM" loading="lazy" style="object-position:center 45%;" />
         </div>
         <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <span class="lookbook-overlay-text">Look Premium</span>
+          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <span class="lookbook-overlay-text">Look Niños</span>
         </div>
       </div>
-      <div class="lookbook-item lb-bg-4 fade-in fade-in-delay-4" role="listitem">
+      <!-- 4: Mujer portrait (tall-right) — crop derecho -->
+      <div class="lookbook-item lb-bg-4 lb-has-photo fade-in fade-in-delay-4" role="listitem">
         <div class="lookbook-visual">
-          <svg width="180" height="280" viewBox="0 0 180 280" fill="none" aria-hidden="true"><circle cx="90" cy="50" rx="32" ry="36" fill="#D4AF37" opacity="0.5"/><path d="M40 90 L90 115 L140 90 L150 200 L90 220 L30 200 Z" fill="#D4AF37" opacity="0.4"/><path d="M70 200 L80 280 L100 280 L110 200 Z" fill="#C9A84C" opacity="0.35"/></svg>
+          <img src="vestidos mujer.png" class="lookbook-img lb-img-mujer" alt="Colección femenina STYLEM" loading="lazy" style="object-position:right 10%;" />
         </div>
         <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
+          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
           <span class="lookbook-overlay-text">Colección Mujer</span>
         </div>
       </div>
-      <div class="lookbook-item lb-bg-5 fade-in fade-in-delay-5" role="listitem">
+      <!-- 5: Hombre wide — crop izquierdo -->
+      <div class="lookbook-item lb-bg-5 lb-has-photo fade-in fade-in-delay-5" role="listitem">
         <div class="lookbook-visual">
-          <svg width="160" height="200" viewBox="0 0 160 200" fill="none" aria-hidden="true"><circle cx="80" cy="38" r="26" fill="#D4AF37" opacity="0.5"/><path d="M30 70 L50 68 L80 100 L110 68 L130 70 L120 200 L40 200 Z" fill="#D4AF37" opacity="0.4"/></svg>
+          <img src="ropahombreniño.png" class="lookbook-img lb-img-hombre" alt="Conjunto masculino STYLEM" loading="lazy" style="object-position:left 25%;" />
         </div>
         <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <span class="lookbook-overlay-text">Conjunto Niños</span>
+          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <span class="lookbook-overlay-text">Conjunto Hombre</span>
         </div>
       </div>
-      <div class="lookbook-item lb-bg-6 fade-in fade-in-delay-6" role="listitem">
+      <!-- 6: Niños wide — crop derecho -->
+      <div class="lookbook-item lb-bg-6 lb-has-photo fade-in fade-in-delay-6" role="listitem">
         <div class="lookbook-visual">
-          <svg width="160" height="200" viewBox="0 0 160 200" fill="none" aria-hidden="true"><ellipse cx="80" cy="44" rx="30" ry="34" fill="#D4AF37" opacity="0.5"/><path d="M35 80 L80 98 L125 80 L130 200 L30 200 Z" fill="#D4AF37" opacity="0.4"/><rect x="65" y="80" width="30" height="5" rx="2.5" fill="#C9A84C" opacity="0.4"/></svg>
+          <img src="conjuntoniño.png" class="lookbook-img lb-img-ninos" alt="Outfit infantil STYLEM" loading="lazy" style="object-position:right 35%;" />
         </div>
         <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
+          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
           <span class="lookbook-overlay-text">Look Formal</span>
         </div>
       </div>
@@ -1901,6 +1997,47 @@
     });
   }, { threshold: 0.12 });
   fadeEls.forEach(el => observer.observe(el));
+
+  /* 3D Tilt on collection cards */
+  (function () {
+    const cards = document.querySelectorAll('.collection-card');
+    cards.forEach(card => {
+      let live = false;
+      // Enable tilt only after entrance transition finishes
+      card.addEventListener('transitionend', function onReveal(e) {
+        if (e.propertyName === 'transform' && card.classList.contains('visible')) {
+          live = true;
+          card.removeEventListener('transitionend', onReveal);
+        }
+      });
+
+      card.addEventListener('mousemove', e => {
+        if (!live) return;
+        const r  = card.getBoundingClientRect();
+        const nx = ((e.clientX - r.left) / r.width  - 0.5) * 2;  // -1…1
+        const ny = ((e.clientY - r.top)  / r.height - 0.5) * 2;  // -1…1
+        card.style.transition = 'transform 0.06s linear, box-shadow 0.08s linear';
+        card.style.setProperty('--rx', `${-ny * 11}deg`);
+        card.style.setProperty('--ry', `${nx  * 11}deg`);
+        card.style.setProperty('--tx', `${-nx * 16}px`);
+        card.style.setProperty('--ty', `${-ny * 12}px`);
+        const d = Math.hypot(nx, ny);
+        card.style.boxShadow = [
+          `${nx*28}px ${ny*22+28}px ${55+d*40}px rgba(0,0,0,${0.55+d*0.28})`,
+          `0 0 ${30+d*30}px rgba(212,175,55,${0.04+d*0.12})`
+        ].join(',');
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.75s cubic-bezier(0.16,1,0.3,1), box-shadow 0.55s ease';
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+        card.style.setProperty('--tx', '0px');
+        card.style.setProperty('--ty', '0px');
+        card.style.boxShadow = '';
+      });
+    });
+  })();
 
   /* Particle canvas */
   (function () {
