@@ -46,290 +46,211 @@
     a { color: inherit; text-decoration: none; }
     ul { list-style: none; }
     button { border: none; cursor: pointer; background: none; font-family: var(--ff-body); }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
     /* ─── LOADING SCREEN ─── */
     #loader {
       position: fixed;
       inset: 0;
-      background: #080706;
+      background: #060504;
       z-index: 9999;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2.8rem;
       overflow: hidden;
-      transition: opacity 1s cubic-bezier(0.4,0,0.2,1), transform 1s cubic-bezier(0.4,0,0.2,1);
+      transition: opacity 1.3s cubic-bezier(0.4,0,0.2,1), transform 1.3s cubic-bezier(0.4,0,0.2,1);
     }
     #loader.fade-out {
       opacity: 0;
-      transform: scale(1.06);
+      transform: scale(1.04);
       pointer-events: none;
-      visibility: hidden;
     }
 
-    /* Ambient radial glow emanating from center */
+    /* Ambient radial glow */
     #loader::before {
       content: '';
       position: absolute;
-      width: 800px; height: 800px;
+      width: 700px; height: 700px;
       border-radius: 50%;
       background: radial-gradient(ellipse at center,
-        rgba(212,175,55,0.09) 0%,
-        rgba(212,175,55,0.04) 35%,
-        transparent 65%);
-      animation: loaderAmbient 3.2s ease forwards;
+        rgba(212,175,55,0.07) 0%,
+        rgba(212,175,55,0.03) 40%,
+        transparent 68%);
       pointer-events: none;
+      animation: ldAmbient 2.5s ease forwards;
     }
-    @keyframes loaderAmbient {
-      0%   { transform: scale(0.2); opacity: 0; }
-      35%  { opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
+    @keyframes ldAmbient {
+      from { transform: scale(0.2); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
     }
 
-    /* Noise grain texture overlay */
+    /* Film grain */
     #loader::after {
       content: '';
       position: absolute;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      background-size: 200px;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-size: 180px;
+      opacity: 0.35;
       pointer-events: none;
-      opacity: 0.4;
     }
 
-    /* ── Logo zone ── */
-    .loader-logo-zone {
-      position: relative;
-      width: 220px; height: 220px;
-      display: flex; align-items: center; justify-content: center;
-      animation: logoZoneEnter 1.1s 0.15s cubic-bezier(0.16,1,0.3,1) both;
-    }
-    @keyframes logoZoneEnter {
-      0%   { opacity: 0; transform: scale(0.65) translateY(40px); filter: blur(16px); }
-      100% { opacity: 1; transform: scale(1)    translateY(0);     filter: blur(0); }
-    }
-
-    /* Outer slow ring - counter-clockwise */
-    .loader-ring-outer {
+    /* ── Corner brackets ── */
+    .ld-corner {
       position: absolute;
-      inset: -32px;
-      border-radius: 50%;
-      border: 1px solid transparent;
-      border-top-color: rgba(212,175,55,0.55);
-      border-right-color: rgba(212,175,55,0.22);
-      border-bottom-color: rgba(212,175,55,0.08);
-      animation: spinCCW 5s linear infinite, ringFadeIn 0.6s 0.9s ease both;
+      width: 30px; height: 30px;
+      pointer-events: none;
     }
-    @keyframes spinCCW { to { transform: rotate(-360deg); } }
-    @keyframes ringFadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* Inner faster ring - clockwise */
-    .loader-ring-inner {
-      position: absolute;
-      inset: -16px;
-      border-radius: 50%;
-      border: 1.5px solid transparent;
-      border-top-color: var(--gold);
-      border-right-color: rgba(212,175,55,0.35);
-      animation: spinCW 2.2s linear infinite, ringFadeIn 0.6s 0.7s ease both;
-      filter: drop-shadow(0 0 4px rgba(212,175,55,0.5));
-    }
-    @keyframes spinCW { to { transform: rotate(360deg); } }
-
-    /* Orbiting dot — primary */
-    .loader-orbit {
-      position: absolute;
-      inset: -16px;
-      border-radius: 50%;
-      animation: spinCW 2.2s linear infinite, ringFadeIn 0.3s 0.9s ease both;
-    }
-    .loader-orbit-dot {
-      position: absolute;
-      top: -3px; left: 50%;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      transform: translateX(-50%);
-      background: var(--gold-light);
-      box-shadow: 0 0 8px 2px rgba(240,208,96,0.7);
-      animation: dotBreath 2.2s ease-in-out infinite;
-    }
-    @keyframes dotBreath {
-      0%,100% { transform: translateX(-50%) scale(1);   opacity: 0.7; }
-      50%      { transform: translateX(-50%) scale(1.2); opacity: 1; }
-    }
-
-    /* Orbiting dot — secondary (offset 180°) */
-    .loader-orbit-2 {
-      animation-direction: reverse;
-      animation-duration: 3.8s;
-      inset: -32px;
-    }
-    .loader-orbit-2 .loader-orbit-dot {
-      width: 4px; height: 4px;
-      background: rgba(212,175,55,0.45);
-      box-shadow: 0 0 5px rgba(212,175,55,0.4);
-      animation-duration: 3.8s;
-    }
-
-    /* Logo image container */
-    .loader-logo-img-wrap {
-      position: relative;
-      width: 190px; height: 190px;
-      border-radius: 50%;
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .loader-logo-img {
-      width: 176px; height: 176px;
-      object-fit: contain;
-      position: relative;
-      z-index: 1;
-      filter: drop-shadow(0 0 14px rgba(212,175,55,0.45));
-    }
-
-    /* Shimmer sweep over the logo — sutil, no titila */
-    .loader-logo-img-wrap::after {
+    .ld-corner::before,
+    .ld-corner::after {
       content: '';
       position: absolute;
-      inset: 0;
-      z-index: 2;
-      background: linear-gradient(
-        108deg,
-        transparent 30%,
-        rgba(255,255,240,0.07) 50%,
-        transparent 70%
-      );
-      transform: translateX(-160%);
-      animation: shimmerPass 4s 1.2s ease-in-out infinite;
-      pointer-events: none;
+      background: rgba(212,175,55,0.55);
     }
-    @keyframes shimmerPass {
-      0%   { transform: translateX(-160%); }
-      40%  { transform: translateX(160%); }
-      100% { transform: translateX(160%); }
+    .ld-corner::before { width: 1px; height: 100%; left: 0; top: 0;
+      transform-origin: top center; transform: scaleY(0);
+      animation: ldCornerV 0.45s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .ld-corner::after  { width: 100%; height: 1px; left: 0; top: 0;
+      transform-origin: left center; transform: scaleX(0);
+      animation: ldCornerH 0.45s 0.38s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes ldCornerV { to { transform: scaleY(1); } }
+    @keyframes ldCornerH { to { transform: scaleX(1); } }
+
+    .ld-corner-tl { top: 2.2rem; left: 2.2rem; }
+    .ld-corner-tr { top: 2.2rem; right: 2.2rem; }
+    .ld-corner-tr::before { right: 0; left: auto; }
+    .ld-corner-tr::after  { transform-origin: right center; }
+    .ld-corner-bl { bottom: 2.2rem; left: 2.2rem; }
+    .ld-corner-bl::before { top: auto; bottom: 0; transform-origin: bottom center; }
+    .ld-corner-br { bottom: 2.2rem; right: 2.2rem; }
+    .ld-corner-br::before { right: 0; left: auto; top: auto; bottom: 0; transform-origin: bottom center; }
+    .ld-corner-br::after  { transform-origin: right center; }
+
+    /* ── Logo reveal (clip-path vertical wipe) ── */
+    .ld-logo-wrap {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 2.2rem;
+    }
+    .ld-logo {
+      width: 118px; height: 118px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 0 22px rgba(212,175,55,0.4));
+      clip-path: inset(50% 5% 50% 5% round 50%);
+      animation: ldLogoReveal 1s 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes ldLogoReveal {
+      to { clip-path: inset(0% 0% 0% 0% round 50%); }
     }
 
-    /* ── Brand text zone ── */
-    .loader-brand-zone {
+    /* ── STYLEM letters ── */
+    .ld-brand {
+      position: relative;
+      z-index: 1;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.55rem;
-      animation: brandEnter 0.9s 1.05s cubic-bezier(0.16,1,0.3,1) both;
+      align-items: baseline;
+      margin-bottom: 1.4rem;
+      overflow: hidden;
     }
-    @keyframes brandEnter {
-      0%   { opacity: 0; transform: translateY(18px); filter: blur(5px); }
-      100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
-    }
-
-    .loader-ornament-row {
-      display: flex; align-items: center; gap: 0.85rem;
-    }
-    .loader-orn-line {
-      height: 1px; width: 44px;
-      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.7), transparent);
-      animation: ornExpand 0.7s 1.4s ease both;
-      transform-origin: center;
-      transform: scaleX(0);
-    }
-    @keyframes ornExpand { to { transform: scaleX(1); } }
-    .loader-orn-diamond {
-      width: 5px; height: 5px;
-      background: var(--gold);
-      transform: rotate(45deg);
-      box-shadow: 0 0 6px rgba(212,175,55,0.5);
-      animation: ornFade 0.4s 1.6s ease both;
-      opacity: 0;
-    }
-    @keyframes ornFade { to { opacity: 1; } }
-
-    .loader-brand-name {
+    .ld-letter {
+      display: inline-block;
       font-family: var(--ff-head);
-      font-size: 2.6rem;
-      font-weight: 600;
-      letter-spacing: 0.65em;
-      text-indent: 0.65em;
-      background: linear-gradient(135deg, #F0D060 0%, #D4AF37 45%, #C9A84C 100%);
+      font-size: 3rem;
+      font-weight: 300;
+      letter-spacing: 0.42em;
+      background: linear-gradient(180deg, #F0D060 0%, #D4AF37 55%, #b8982d 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      line-height: 1;
+      opacity: 0;
+      transform: translateY(36px);
+      animation: ldLetterIn 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .ld-letter:nth-child(1) { animation-delay: 1.05s; }
+    .ld-letter:nth-child(2) { animation-delay: 1.14s; }
+    .ld-letter:nth-child(3) { animation-delay: 1.23s; }
+    .ld-letter:nth-child(4) { animation-delay: 1.32s; }
+    .ld-letter:nth-child(5) { animation-delay: 1.41s; }
+    .ld-letter:nth-child(6) { animation-delay: 1.50s; }
+    @keyframes ldLetterIn {
+      from { opacity:0; transform:translateY(36px); filter:blur(5px); }
+      to   { opacity:1; transform:translateY(0);    filter:blur(0); }
     }
 
-    .loader-brand-sub {
-      font-family: var(--ff-body);
-      font-size: 0.52rem;
-      font-weight: 400;
-      letter-spacing: 0.42em;
-      text-indent: 0.42em;
-      text-transform: uppercase;
-      color: rgba(212,175,55,0.45);
-      animation: subFade 0.5s 1.6s ease both;
-      opacity: 0;
-    }
-    @keyframes subFade { to { opacity: 1; } }
-
-    /* ── Progress bar ── */
-    .loader-progress-wrap {
-      position: absolute;
-      bottom: 2.8rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
-      animation: subFade 0.3s 0.6s ease both;
-      opacity: 0;
-    }
-    .loader-pct {
-      font-family: var(--ff-body);
-      font-size: 0.5rem;
-      letter-spacing: 0.25em;
-      color: rgba(212,175,55,0.35);
-      font-variant-numeric: tabular-nums;
-    }
-    .loader-progress-track {
-      width: 240px;
-      height: 1px;
-      background: rgba(212,175,55,0.1);
-      border-radius: 1px;
+    /* ── Gold divider ── */
+    .ld-rule {
       position: relative;
-      overflow: visible;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.1rem;
     }
-    .loader-progress-fill {
+    .ld-rule-line {
+      height: 1px; width: 55px;
+      background: linear-gradient(90deg, transparent, rgba(212,175,55,0.75));
+      transform-origin: right center; transform: scaleX(0);
+      animation: ldRuleIn 0.55s 1.65s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .ld-rule-line + .ld-rule-dot + .ld-rule-line {
+      background: linear-gradient(90deg, rgba(212,175,55,0.75), transparent);
+      transform-origin: left center;
+    }
+    .ld-rule-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(212,175,55,0.8);
+      opacity: 0;
+      animation: ldFadeUp 0.35s 1.72s ease forwards;
+    }
+    @keyframes ldRuleIn  { to { transform: scaleX(1); } }
+    @keyframes ldFadeUp  { to { opacity: 1; } }
+
+    /* ── Subtitle ── */
+    .ld-sub {
+      position: relative;
+      z-index: 1;
+      font-family: var(--ff-body);
+      font-size: 0.46rem;
+      font-weight: 400;
+      letter-spacing: 0.48em;
+      text-indent: 0.48em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.38);
+      opacity: 0;
+      animation: ldFadeUp 0.6s 1.82s ease forwards;
+    }
+
+    /* ── Progress bar (bottom edge of screen) ── */
+    .ld-progress {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .ld-progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, rgba(201,168,76,0.6), var(--gold-light));
-      border-radius: 1px;
-      animation: progFill 2.9s 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
+      background: linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.5) 40%, var(--gold-light) 100%);
+      animation: ldProgFill 2.9s 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
       position: relative;
     }
-    @keyframes progFill {
-      0%   { width: 0%; }
-      15%  { width: 18%; }
-      50%  { width: 55%; }
-      80%  { width: 82%; }
-      100% { width: 100%; }
-    }
-    .loader-progress-fill::after {
+    .ld-progress-fill::after {
       content: '';
       position: absolute;
-      right: -1px; top: -3px;
-      width: 2px; height: 7px;
-      background: var(--gold-light);
-      border-radius: 1px;
-      box-shadow: 0 0 10px 2px rgba(240,208,96,0.9);
+      right: 0; top: -2px; bottom: -2px;
+      width: 50px;
+      background: linear-gradient(90deg, transparent, rgba(240,208,96,0.9));
+      filter: blur(3px);
     }
-    .loader-progress-track::after {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      background: linear-gradient(90deg,
-        transparent,
-        rgba(212,175,55,0.08),
-        transparent);
+    @keyframes ldProgFill {
+      0%  { width:  0%; }
+      20% { width: 24%; }
+      55% { width: 62%; }
+      85% { width: 90%; }
+      100%{ width:100%; }
     }
 
     /* ─── NAVBAR ─── */
@@ -1483,38 +1404,41 @@
 <!-- ─── LOADING SCREEN ─── -->
 <div id="loader" role="status" aria-label="Cargando STYLEM">
 
-  <!-- Logo zone -->
-  <div class="loader-logo-zone">
-    <div class="loader-ring-outer"></div>
-    <div class="loader-ring-inner"></div>
-    <div class="loader-orbit">
-      <div class="loader-orbit-dot"></div>
-    </div>
-    <div class="loader-orbit loader-orbit-2">
-      <div class="loader-orbit-dot"></div>
-    </div>
-    <div class="loader-logo-img-wrap">
-      <img src="LOGO.png" class="loader-logo-img" alt="Style M Fashions" draggable="false" />
-    </div>
+  <!-- Corner brackets -->
+  <div class="ld-corner ld-corner-tl" aria-hidden="true"></div>
+  <div class="ld-corner ld-corner-tr" aria-hidden="true"></div>
+  <div class="ld-corner ld-corner-bl" aria-hidden="true"></div>
+  <div class="ld-corner ld-corner-br" aria-hidden="true"></div>
+
+  <!-- Logo (clip-path vertical wipe) -->
+  <div class="ld-logo-wrap">
+    <img src="LOGO.png" class="ld-logo" alt="STYLEM" draggable="false" />
   </div>
 
-  <!-- Brand text -->
-  <div class="loader-brand-zone">
-    <div class="loader-ornament-row">
-      <div class="loader-orn-line"></div>
-      <div class="loader-orn-diamond" aria-hidden="true"></div>
-      <div class="loader-brand-name">STYLEM</div>
-      <div class="loader-orn-diamond" aria-hidden="true"></div>
-      <div class="loader-orn-line"></div>
-    </div>
-    <div class="loader-brand-sub">Style M · Fashions · Bogotá</div>
+  <!-- Letters stagger -->
+  <div class="ld-brand" aria-hidden="true">
+    <span class="ld-letter">S</span>
+    <span class="ld-letter">T</span>
+    <span class="ld-letter">Y</span>
+    <span class="ld-letter">L</span>
+    <span class="ld-letter">E</span>
+    <span class="ld-letter">M</span>
+  </div>
+  <span class="sr-only">STYLEM</span>
+
+  <!-- Gold divider rule -->
+  <div class="ld-rule" aria-hidden="true">
+    <div class="ld-rule-line"></div>
+    <div class="ld-rule-dot"></div>
+    <div class="ld-rule-line"></div>
   </div>
 
-  <!-- Progress bar -->
-  <div class="loader-progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Cargando">
-    <div class="loader-progress-track">
-      <div class="loader-progress-fill"></div>
-    </div>
+  <!-- Subtitle -->
+  <div class="ld-sub" aria-hidden="true">Style M &middot; Fashions &middot; Bogotá</div>
+
+  <!-- Progress bar (bottom edge) -->
+  <div class="ld-progress" role="progressbar" aria-label="Cargando" aria-valuemin="0" aria-valuemax="100">
+    <div class="ld-progress-fill"></div>
   </div>
 
 </div>
