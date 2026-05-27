@@ -1294,14 +1294,67 @@
     }
     @media (max-width: 520px) {
       section { padding: 4rem 1.25rem; }
+      #features  { padding-left: 1.25rem; padding-right: 1.25rem; }
       .hero-title { font-size: 2.4rem; }
-      .collections-grid { grid-template-columns: 1fr; }
-      .collection-card { aspect-ratio: 4/3; }
-      .lookbook-grid { grid-template-columns: 1fr; }
+
+      /* ── helper: bleed scroll track ── */
+      .collections-grid,
+      .features-grid,
+      .lookbook-grid,
+      .testimonials-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* bleed past section padding so cards start at screen edge */
+        margin-left: -1.25rem;
+        margin-right: -1.25rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        padding-bottom: 1rem;
+        gap: 12px;
+      }
+      .collections-grid::-webkit-scrollbar,
+      .features-grid::-webkit-scrollbar,
+      .lookbook-grid::-webkit-scrollbar,
+      .testimonials-grid::-webkit-scrollbar { display: none; }
+
+      /* ── Collections ── */
+      .collection-card {
+        flex-shrink: 0;
+        width: 75vw;
+        aspect-ratio: 3/4;
+        scroll-snap-align: start;
+      }
+
+      /* ── Features ── */
+      .feature-item {
+        flex-shrink: 0;
+        width: 68vw;
+        scroll-snap-align: start;
+      }
+
+      /* ── Lookbook ── */
+      .lookbook-grid {
+        gap: 8px;
+        grid-template-columns: unset;
+        grid-template-rows: unset;
+      }
       .lookbook-item:nth-child(n) {
+        flex-shrink: 0;
+        width: 65vw;
+        aspect-ratio: 2/3;
+        scroll-snap-align: start;
         grid-column: auto;
         grid-row: auto;
-        aspect-ratio: 4/3;
+      }
+
+      /* ── Testimonios ── */
+      .testimonial-card {
+        flex-shrink: 0;
+        width: 80vw;
+        scroll-snap-align: start;
       }
     }
 
