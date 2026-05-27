@@ -1328,9 +1328,32 @@
       .about-stats { gap: 1.5rem; }
     }
     @media (max-width: 520px) {
-      section { padding: 4rem 1.25rem; }
-      #features  { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .hero-title { font-size: 2.4rem; }
+      /* ── Sections: menos relleno vertical ── */
+      section            { padding: 2.8rem 1.25rem; }
+      #features          { padding: 2.8rem 1.25rem; }
+      footer             { padding: 2rem 1.25rem; }
+
+      /* ── Hero: reducir márgenes internos ── */
+      .hero-label        { margin-bottom: 1rem; }
+      .hero-title        { font-size: 2.2rem; margin-bottom: 0.9rem; }
+      .hero-subtitle     { margin-bottom: 1.6rem; }
+      .hero-scroll       { bottom: 1.5rem; }
+
+      /* ── Section headers: eliminar espacio excesivo bajo el título ── */
+      .collections-header  { margin-bottom: 1.8rem; }
+      .lookbook-header     { margin-bottom: 1.8rem; }
+      .testimonials-header { margin-bottom: 1.8rem; }
+
+      /* ── About: ocultar el visual decorativo, solo texto ── */
+      .about-visual      { display: none; }
+      .about-grid        { gap: 0; }
+      .about-stats       { gap: 1rem; margin-top: 1.5rem; }
+      .about-badge       { display: none; }
+
+      /* ── Contacto: reducir gap al apilar ── */
+      .contact-wrapper   { gap: 2rem; }
+      .contact-info-list { gap: 1.2rem; }
+      .contact-text      { margin-bottom: 1.5rem; }
 
       /* ── helper: bleed scroll track ── */
       .collections-grid,
@@ -1342,7 +1365,6 @@
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        /* bleed past section padding so cards start at screen edge */
         margin-left: -1.25rem;
         margin-right: -1.25rem;
         padding-left: 1.25rem;
