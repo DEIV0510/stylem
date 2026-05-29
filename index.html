@@ -832,10 +832,11 @@
       inset: 0;
       background: linear-gradient(
         to top,
-        rgba(5,4,3,0.98) 0%,
-        rgba(8,7,5,0.85) 28%,
-        rgba(8,7,5,0.25) 55%,
-        transparent 78%
+        rgba(5,4,3,0.99) 0%,
+        rgba(8,7,5,0.97) 32%,
+        rgba(8,7,5,0.80) 52%,
+        rgba(8,7,5,0.30) 68%,
+        transparent 84%
       );
       z-index: 2;
     }
@@ -882,27 +883,93 @@
       position: absolute;
       bottom: 0; left: 0; right: 0;
       z-index: 6;
-      padding: 2rem 1.8rem;
-      transform: translateY(8px);
+      padding: 1.6rem 1.6rem 1.5rem;
+      transform: translateY(6px);
       transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
     }
     .collection-card:hover .card-content { transform: translateY(0); }
     .card-tag {
-      font-size: 0.52rem;
-      letter-spacing: 0.32em;
+      font-size: 0.5rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 0.5rem;
-      opacity: 0.9;
+      margin-bottom: 0.35rem;
+      opacity: 0.85;
     }
     .card-title {
       font-family: var(--ff-head);
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 300;
       color: var(--white);
       line-height: 1.05;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.25rem;
       text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    }
+    .card-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .card-subtitle {
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.6);
+      margin-bottom: 0.55rem;
+    }
+    .card-price {
+      font-family: var(--ff-head);
+      font-size: 1.55rem;
+      font-weight: 400;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.7rem;
+      letter-spacing: 0.03em;
+    }
+    .card-includes {
+      list-style: none;
+      margin: 0 0 0.7rem;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.22rem;
+    }
+    .card-includes li {
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.68);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      line-height: 1.35;
+    }
+    .card-includes li::before {
+      content: '';
+      display: block;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+    .card-badge {
+      font-size: 0.52rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(212,175,55,0.55);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .card-badge::before {
+      content: '';
+      display: block;
+      width: 14px; height: 1px;
+      background: rgba(212,175,55,0.35);
+      flex-shrink: 0;
     }
     .card-desc {
       font-size: 0.72rem;
@@ -915,7 +982,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--gold);
@@ -929,6 +996,7 @@
       transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
     }
     .collection-card:hover .card-link::after { transform: translateX(5px); }
+    @media (max-width: 768px) { .card-link { opacity: 1; } }
 
     /* ── 3D entrance override for cards ── */
     .collection-card.fade-in {
@@ -1718,7 +1786,7 @@
     <div class="collections-header fade-in">
       <div class="section-label">Colecciones</div>
       <h2 class="section-title" id="collections-heading">Moda para <em>toda la familia</em></h2>
-      <p class="section-desc" style="margin: 0 auto; text-align: center;">Piezas cuidadosamente seleccionadas para que cada miembro de tu familia luzca impecable.</p>
+      <p class="section-desc" style="margin: 0 auto; text-align: center;">Envío gratis a toda Colombia · Paga al recibir · Tallas desde 2 hasta 16 en niños</p>
     </div>
     <div class="collections-grid" role="list">
 
@@ -1732,9 +1800,17 @@
         <div class="card-shimmer"></div>
         <div class="card-content">
           <div class="card-tag">Colección Masculina</div>
-          <h3 class="card-title">Hombre</h3>
-          <p class="card-desc">Combo Outfit PREMIUM: trajes, blazers, camisas y cinturones para el hombre de alto valor.</p>
-          <a href="https://wa.me/573219446756?text=Hola!%20Me%20interesan%20los%20outfits%20masculinos" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="Ver colección masculina por WhatsApp">Ver colección</a>
+          <h3 class="card-title">Traje <em>Ejecutivo</em></h3>
+          <div class="card-subtitle">Punto Roma</div>
+          <div class="card-price">$299.999</div>
+          <ul class="card-includes" aria-label="Incluye">
+            <li>Pantalón en Punto Roma</li>
+            <li>Camisa tipo Polo</li>
+            <li>Blazer en Punto Roma</li>
+            <li>Correa de cuero Vélez</li>
+          </ul>
+          <div class="card-badge">Envío gratis · Pago al recibir</div>
+          <a href="https://wa.me/573219446756?text=Hola!%20Quiero%20el%20Traje%20Ejecutivo%20PREMIUM%20%24299.999%20%F0%9F%94%A5" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="Pedir Traje Ejecutivo por WhatsApp">Pedir ahora</a>
         </div>
       </article>
 
@@ -1747,10 +1823,17 @@
         <div class="card-glow"></div>
         <div class="card-shimmer"></div>
         <div class="card-content">
-          <div class="card-tag">Colección Femenina</div>
-          <h3 class="card-title">Mujer</h3>
-          <p class="card-desc">Elegancia que te hace única: faldas, blusas, vestidos y conjuntos ejecutivos y casuales.</p>
-          <a href="https://wa.me/573219446756?text=Hola!%20Me%20interesan%20los%20conjuntos%20para%20mujer" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="Ver colección femenina por WhatsApp">Ver colección</a>
+          <div class="card-tag">Colección Femenina · Promoción</div>
+          <h3 class="card-title">Set <em>Esther</em></h3>
+          <div class="card-subtitle">Talla Única</div>
+          <div class="card-price">$149.999</div>
+          <ul class="card-includes" aria-label="Incluye">
+            <li>Falda plisada larga</li>
+            <li>Blusa manga larga o corta</li>
+            <li>Cinturón de regalo con hebilla</li>
+          </ul>
+          <div class="card-badge">Envío gratis · Pago al recibir</div>
+          <a href="https://wa.me/573219446756?text=Hola!%20Quiero%20el%20Set%20Esther%20%24149.999%20%F0%9F%94%A5" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="Pedir Set Esther por WhatsApp">Pedir ahora</a>
         </div>
       </article>
 
@@ -1764,9 +1847,17 @@
         <div class="card-shimmer"></div>
         <div class="card-content">
           <div class="card-tag">Colección Infantil</div>
-          <h3 class="card-title">Niños</h3>
-          <p class="card-desc">Conjuntos elegantes para los más pequeños: blazers, pantalones y outfits completos.</p>
-          <a href="https://wa.me/573219446756?text=Hola!%20Me%20interesan%20los%20conjuntos%20para%20niños" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="Ver colección infantil por WhatsApp">Ver colección</a>
+          <h3 class="card-title">Traje <em>Formal</em></h3>
+          <div class="card-subtitle">Dril Semilicrado</div>
+          <div class="card-price">$179.999</div>
+          <ul class="card-includes" aria-label="Incluye">
+            <li>Pantalón</li>
+            <li>Camisa</li>
+            <li>Blazer</li>
+            <li>Correa</li>
+          </ul>
+          <div class="card-badge">Tallas 2–16 · Envío gratis · Pago al recibir</div>
+          <a href="https://wa.me/573219446756?text=Hola!%20Quiero%20el%20Traje%20Formal%20para%20ni%C3%B1o%20%24179.999%20%F0%9F%94%A5" class="card-link" target="_blank" rel="noopener noreferrer" aria-label="Pedir Traje Formal para niño por WhatsApp">Pedir ahora</a>
         </div>
       </article>
 
