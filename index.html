@@ -577,17 +577,16 @@
     }
     .hero-visual {
       position: relative;
-      padding-bottom: 2.8rem;
-      padding-left: 2.4rem;
       animation: fadeInUp 0.9s 0.35s ease both;
     }
     .hero-img-main-wrap {
       position: relative;
       width: 100%;
-      aspect-ratio: 3/4;
+      aspect-ratio: 1/1;
       overflow: hidden;
       border: 1px solid rgba(212,175,55,0.22);
       border-radius: 2px;
+      background: #080705;
     }
     .hero-img-main-wrap::before {
       content: '';
@@ -610,10 +609,9 @@
     .hero-img-main {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center 15%;
-      filter: brightness(0.9) contrast(1.06) saturate(0.95);
-      transform: scale(1.05);
+      object-fit: contain;
+      object-position: center center;
+      filter: brightness(0.96) contrast(1.03) saturate(0.97);
     }
     .hero-img-float {
       position: absolute;
@@ -1088,16 +1086,42 @@
       position: relative;
     }
     .about-box {
-      aspect-ratio: 4/5;
-      background: #171a24;
-      border: 1px solid rgba(212, 175, 55, 0.18);
+      aspect-ratio: 16/9;
+      background: #080705;
+      border: 1px solid rgba(212, 175, 55, 0.22);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       border-radius: 2px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.5);
     }
     .about-box svg { opacity: 0.22; }
+    .about-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Marco dorado en esquinas para el video */
+    .about-visual::before {
+      content: '';
+      position: absolute;
+      top: -8px; left: -8px;
+      width: 34px; height: 34px;
+      border-top: 1.5px solid var(--gold);
+      border-left: 1.5px solid var(--gold);
+      z-index: 3; pointer-events: none;
+    }
+    .about-visual::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; right: -8px;
+      width: 34px; height: 34px;
+      border-bottom: 1.5px solid var(--gold);
+      border-right: 1.5px solid var(--gold);
+      z-index: 3; pointer-events: none;
+    }
     .about-badge {
       position: absolute;
       bottom: -1.5rem;
@@ -1176,33 +1200,16 @@
     .lookbook-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 4px;
+      gap: 10px;
     }
     .lookbook-item {
       position: relative;
       overflow: hidden;
-      background: #201d16;
+      background: #080705;
       cursor: pointer;
-    }
-    .lookbook-item:nth-child(1) {
-      grid-column: 1 / 2;
-      grid-row: 1 / 3;
-      aspect-ratio: 2/3;
-    }
-    .lookbook-item:nth-child(2),
-    .lookbook-item:nth-child(3) {
-      aspect-ratio: 4/3;
-    }
-    .lookbook-item:nth-child(4) {
-      grid-column: 3 / 4;
-      grid-row: 1 / 3;
-      aspect-ratio: 2/3;
-    }
-    .lookbook-item:nth-child(5),
-    .lookbook-item:nth-child(6) {
-      grid-column: 2 / 3;
-      aspect-ratio: 4/3;
+      aspect-ratio: 1/1;
+      border: 1px solid rgba(212,175,55,0.10);
+      border-radius: 2px;
     }
     .lookbook-visual {
       width: 100%;
@@ -1221,31 +1228,30 @@
     .lookbook-img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
+      object-fit: contain;
+      object-position: center center;
       display: block;
-      transform: scale(1.06);
-      transition: transform 0.85s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease;
       will-change: transform;
     }
-    .lookbook-item:hover .lookbook-img { transform: scale(1.14); }
-    /* Per-image colour grading */
-    .lb-img-mujer  { filter: brightness(0.78) contrast(1.1) saturate(1.05); object-position: center 12%; }
-    .lb-img-hombre { filter: brightness(0.88) contrast(1.08) saturate(1.02); object-position: center center; }
-    .lb-img-ninos  { filter: brightness(0.72) contrast(1.15) saturate(0.88); object-position: center 38%; }
-    /* Nuevas fotos con fondo oscuro (ads creativos) */
-    .lb-img-ad-dark  { filter: brightness(0.92) contrast(1.05) saturate(0.90); }
-    /* Fotos de niños (fondo blanco/collage) */
-    .lb-img-kids-col { filter: brightness(0.60) contrast(1.12) saturate(0.80); object-position: center center; }
+    .lookbook-item:hover .lookbook-img { transform: scale(1.04); }
+    /* Per-image colour grading (todas completas, se mezclan con la página) */
+    .lb-img-mujer  { filter: brightness(0.92) contrast(1.05) saturate(1.03); }
+    .lb-img-hombre { filter: brightness(0.95) contrast(1.04) saturate(1.0); }
+    .lb-img-ninos  { filter: brightness(0.88) contrast(1.08) saturate(0.92); }
+    /* Ads creativos (cuadrados, fondo oscuro) */
+    .lb-img-ad-dark  { filter: brightness(0.98) contrast(1.02) saturate(0.95); }
+    /* Collages de niños (cuadrados) */
+    .lb-img-kids-col { filter: brightness(0.92) contrast(1.05) saturate(0.92); }
 
-    /* Permanent dark vignette on photo items so text is always readable */
+    /* Overlay solo al pasar el cursor — la imagen completa se ve en reposo */
     .lb-has-photo .lookbook-overlay {
       background: linear-gradient(to top,
         rgba(5,4,3,0.92) 0%,
-        rgba(5,4,3,0.38) 45%,
-        rgba(0,0,0,0.18) 100%
+        rgba(5,4,3,0.32) 50%,
+        rgba(0,0,0,0) 100%
       );
-      opacity: 0.55;
+      opacity: 0;
       transition: opacity 0.45s ease;
     }
     .lb-has-photo:hover .lookbook-overlay { opacity: 1; }
@@ -1547,18 +1553,6 @@
       .hamburger { display: flex; }
       .lookbook-grid {
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: auto;
-      }
-      .lookbook-item:nth-child(1),
-      .lookbook-item:nth-child(4) {
-        grid-column: auto;
-        grid-row: auto;
-        aspect-ratio: 4/5;
-      }
-      .lookbook-item:nth-child(5),
-      .lookbook-item:nth-child(6) {
-        grid-column: auto;
-        aspect-ratio: 4/5;
       }
       .about-stats { gap: 1.5rem; }
     }
@@ -1579,8 +1573,8 @@
       .lookbook-header     { margin-bottom: 1.8rem; }
       .testimonials-header { margin-bottom: 1.8rem; }
 
-      /* ── About: ocultar el visual decorativo, solo texto ── */
-      .about-visual      { display: none; }
+      /* ── About: mostrar el video arriba del texto ── */
+      .about-visual      { display: block; margin-bottom: 2rem; }
       .about-grid        { gap: 0; }
       .about-stats       { gap: 1rem; margin-top: 1.5rem; }
       .about-badge       { display: none; }
@@ -1635,8 +1629,8 @@
       }
       .lookbook-item:nth-child(n) {
         flex-shrink: 0;
-        width: 65vw;
-        aspect-ratio: 2/3;
+        width: 72vw;
+        aspect-ratio: 1/1;
         scroll-snap-align: start;
         grid-column: auto;
         grid-row: auto;
@@ -1733,11 +1727,7 @@
   <div class="hero-split">
     <div class="hero-visual">
       <div class="hero-img-main-wrap">
-        <img src="6.png" class="hero-img-main" alt="Hombre de alto valor — Traje Ejecutivo PREMIUM STYLEM" style="object-position: 60% top; filter: brightness(0.88) contrast(1.06) saturate(0.92);" />
-      </div>
-      <div class="hero-img-float">
-        <img src="vestidos mujer.png" alt="Colección femenina STYLEM" loading="lazy" />
-        <span class="hero-img-tag">Mujer</span>
+        <img src="6.png" class="hero-img-main" alt="Hombre de alto valor — Traje Ejecutivo PREMIUM STYLEM" />
       </div>
     </div>
     <div class="hero-content">
@@ -1909,11 +1899,7 @@
     <div class="about-grid">
       <div class="about-visual fade-in">
         <div class="about-box">
-          <svg width="320" height="400" viewBox="0 0 320 400" fill="none" aria-hidden="true">
-            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="130" font-weight="300" fill="#D4AF37" opacity="0.5">SM</text>
-            <circle cx="160" cy="200" r="155" stroke="#D4AF37" stroke-width="1" fill="none" opacity="0.25"/>
-            <circle cx="160" cy="200" r="135" stroke="#D4AF37" stroke-width="0.5" fill="none" opacity="0.15"/>
-          </svg>
+          <video class="about-video" src="video.mp4" autoplay muted loop playsinline preload="auto" aria-label="STYLEM — colección en movimiento"></video>
         </div>
         <div class="about-badge" aria-label="Más de 5 años de experiencia">
           <div class="about-badge-num">5+</div>
