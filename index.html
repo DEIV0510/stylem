@@ -583,7 +583,9 @@
     .hero-img-main-wrap {
       position: relative;
       width: 100%;
-      aspect-ratio: 1/1;
+      max-width: 400px;
+      margin: 0 auto;
+      aspect-ratio: 3/4;
       overflow: hidden;
       border: 1px solid rgba(212,175,55,0.22);
       border-radius: 2px;
@@ -610,10 +612,12 @@
     .hero-img-main {
       width: 100%;
       height: 100%;
-      object-fit: contain;
-      object-position: center center;
-      filter: brightness(0.96) contrast(1.03) saturate(0.97);
+      object-fit: cover;
+      object-position: center 18%;
+      filter: brightness(0.98) contrast(1.03) saturate(1.0);
     }
+    /* Niño (collage cuadrado): mostrar al niño que está a la derecha */
+    .hero-slide-nino { object-position: 100% 30%; }
     /* ── Hero slider (crossfade) ── */
     .hero-slide {
       position: absolute;
@@ -713,7 +717,7 @@
       .hero-split .hero-content { text-align: center; }
       .hero-split .hero-subtitle { margin: 0 auto 2rem; max-width: 460px; }
       .hero-split .hero-actions { justify-content: center; }
-      .hero-visual { max-width: 360px; margin: 0 auto; }
+      .hero-visual { width: 100%; max-width: 360px; margin: 0 auto; }
       .hero-cats { justify-content: center; }
       .hero-stats { justify-content: center; }
       .hero-scroll { display: none; }
@@ -849,15 +853,93 @@
       will-change: transform;
       display: block;
     }
-    /* Women's image: white bg, tone down */
+    /* Hombre modelo: cabeza arriba, fondo claro */
+    .card-img-hombre {
+      filter: brightness(0.82) contrast(1.06) saturate(1.0);
+      object-position: center 10%;
+    }
+    /* Mujer modelo: fondo de interior elegante, conservar cabeza */
     .card-img-mujer {
-      filter: brightness(0.72) contrast(1.12) saturate(1.1);
+      filter: brightness(0.9) contrast(1.04) saturate(1.04);
       object-position: center 8%;
     }
-    /* Niño con traje: el niño está a la derecha de la foto */
+    /* Niño (collage): el niño está a la derecha de la foto */
     .card-img-ninos {
-      filter: brightness(0.84) contrast(1.05) saturate(0.96);
-      object-position: 100% 38%;
+      filter: brightness(0.92) contrast(1.04) saturate(0.98);
+      object-position: 100% 28%;
+    }
+
+    /* ─── CATÁLOGO (galería por categoría) ─── */
+    #catalogo .collections-header { margin-bottom: 2.6rem; }
+    .cat-group { margin-bottom: 2.6rem; }
+    .cat-group:last-child { margin-bottom: 0; }
+    .cat-group-title {
+      font-family: var(--ff-head);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      margin-bottom: 1.1rem;
+      padding-left: 0.85rem;
+      border-left: 2px solid var(--gold);
+      line-height: 1;
+    }
+    .cat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .cat-item {
+      position: relative;
+      height: 360px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      border: 1px solid rgba(212,175,55,0.16);
+      border-radius: 2px;
+      background: #080705;
+      cursor: pointer;
+    }
+    .cat-item img {
+      height: 100%;
+      width: auto;
+      display: block;
+      filter: brightness(0.94) contrast(1.03) saturate(1.0);
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease;
+      will-change: transform;
+    }
+    .cat-item:hover { border-color: rgba(212,175,55,0.5); }
+    .cat-item:hover img { transform: scale(1.05); filter: brightness(1.04); }
+    .cat-label {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 1.6rem 0.9rem 0.7rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(to top, rgba(5,4,3,0.92), transparent);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .cat-item:hover .cat-label { opacity: 1; }
+    @media (max-width: 768px) {
+      .cat-item { height: 300px; }
+    }
+    @media (max-width: 520px) {
+      .cat-group-title { font-size: 1.35rem; }
+      .cat-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        margin: 0 -1.25rem;
+        padding: 0 1.25rem 0.6rem;
+      }
+      .cat-row::-webkit-scrollbar { display: none; }
+      .cat-item { height: 380px; scroll-snap-align: start; }
+      .cat-label { opacity: 1; }
     }
 
     /* ── Gradient overlay (bottom-heavy) ── */
@@ -1740,6 +1822,7 @@
     <ul class="nav-links" role="list">
       <li><a href="#inicio">Inicio</a></li>
       <li><a href="#collections">Colecciones</a></li>
+      <li><a href="#catalogo">Catálogo</a></li>
       <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#contacto" class="nav-cta">Contacto</a></li>
     </ul>
@@ -1750,6 +1833,7 @@
   <ul class="nav-mobile" id="mobile-nav" role="list">
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#collections">Colecciones</a></li>
+    <li><a href="#catalogo">Catálogo</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
@@ -1762,9 +1846,9 @@
   <div class="hero-split">
     <div class="hero-visual">
       <div class="hero-img-main-wrap" id="hero-slider">
-        <img src="6.png" class="hero-img-main hero-slide is-active" alt="Traje Ejecutivo PREMIUM STYLEM — hombre" />
-        <img src="1.png" class="hero-img-main hero-slide" alt="Combo Outfit Masculino PREMIUM STYLEM" loading="lazy" />
-        <img src="2.png" class="hero-img-main hero-slide" alt="Traje formal de niño azul marino STYLEM" loading="lazy" />
+        <img src="hombre-gris.jpg" class="hero-img-main hero-slide is-active" alt="Hombre con traje gris STYLEM — moda masculina premium" />
+        <img src="falda-morada.jpg" class="hero-img-main hero-slide" alt="Mujer con falda plisada morada STYLEM — moda femenina elegante" loading="lazy" />
+        <img src="nino-azul.jpg" class="hero-img-main hero-slide hero-slide-nino" alt="Niño con traje azul STYLEM — moda infantil" loading="lazy" />
         <div class="hero-slider-dots" aria-hidden="true">
           <span class="hero-dot is-active"></span>
           <span class="hero-dot"></span>
@@ -1829,7 +1913,7 @@
       <!-- Hombre -->
       <article class="collection-card card-hombre fade-in fade-in-delay-1" role="listitem">
         <div class="card-visual">
-          <img src="ropahombreniño.png" class="card-img" alt="Colección masculina STYLEM — blazer, camisas y pantalones premium" loading="lazy" />
+          <img src="hombre-azul.jpg" class="card-img card-img-hombre" alt="Colección masculina STYLEM — hombre con blazer azul y pantalón" loading="lazy" />
         </div>
         <div class="card-gradient"></div>
         <div class="card-glow"></div>
@@ -1853,7 +1937,7 @@
       <!-- Mujer -->
       <article class="collection-card card-mujer fade-in fade-in-delay-2" role="listitem">
         <div class="card-visual">
-          <img src="vestidos mujer.png" class="card-img card-img-mujer" alt="Colección femenina STYLEM — faldas, vestidos y conjuntos elegantes" loading="lazy" />
+          <img src="falda-beige.jpg" class="card-img card-img-mujer" alt="Colección femenina STYLEM — Set Esther, falda plisada y blusa" loading="lazy" />
         </div>
         <div class="card-gradient"></div>
         <div class="card-glow"></div>
@@ -1876,7 +1960,7 @@
       <!-- Niños -->
       <article class="collection-card card-ninos fade-in fade-in-delay-3" role="listitem">
         <div class="card-visual">
-          <img src="4.png" class="card-img card-img-ninos" alt="Traje formal para niño en dril semilicrado — niño modelo STYLEM" loading="lazy" />
+          <img src="nino-azulclaro.jpg" class="card-img card-img-ninos" alt="Traje formal para niño en dril semilicrado — niño modelo STYLEM" loading="lazy" />
         </div>
         <div class="card-gradient"></div>
         <div class="card-glow"></div>
@@ -1898,6 +1982,67 @@
       </article>
 
     </div>
+  </div>
+</section>
+
+<!-- ─── CATÁLOGO ─── -->
+<section id="catalogo" aria-labelledby="catalogo-heading">
+  <div class="section-inner">
+    <div class="collections-header fade-in">
+      <div class="section-label">Catálogo</div>
+      <h2 class="section-title" id="catalogo-heading">Más <em>estilos</em></h2>
+      <p class="section-desc" style="margin: 0 auto; text-align: center;">Explora más prendas de nuestra colección para hombre, mujer y niños.</p>
+    </div>
+
+    <!-- Hombre -->
+    <div class="cat-group fade-in">
+      <h3 class="cat-group-title">Hombre</h3>
+      <div class="cat-row">
+        <a class="cat-item" href="https://wa.me/573219446756?text=Hola!%20Me%20interesa%20el%20conjunto%20masculino%20blanco" target="_blank" rel="noopener noreferrer" aria-label="Pedir conjunto masculino blanco por WhatsApp">
+          <img src="hombre-blanco.jpg" alt="Conjunto masculino blanco STYLEM" loading="lazy" />
+          <span class="cat-label">Conjunto Blanco</span>
+        </a>
+        <a class="cat-item" href="https://wa.me/573219446756?text=Hola!%20Me%20interesa%20el%20Combo%20Outfit%20Masculino%20PREMIUM" target="_blank" rel="noopener noreferrer" aria-label="Pedir Combo Outfit Masculino por WhatsApp">
+          <img src="combo-masculino.jpg" alt="Combo Outfit Masculino PREMIUM STYLEM" loading="lazy" />
+          <span class="cat-label">Combo Premium</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mujer -->
+    <div class="cat-group fade-in">
+      <h3 class="cat-group-title">Mujer</h3>
+      <div class="cat-row">
+        <a class="cat-item" href="https://wa.me/573219446756?text=Hola!%20Me%20interesa%20el%20conjunto%20femenino%20azul" target="_blank" rel="noopener noreferrer" aria-label="Pedir conjunto femenino azul por WhatsApp">
+          <img src="vestido-azul.jpg" alt="Conjunto femenino con blusa azul y falda STYLEM" loading="lazy" />
+          <span class="cat-label">Conjunto Azul</span>
+        </a>
+        <a class="cat-item" href="https://wa.me/573219446756?text=Hola!%20Me%20interesa%20el%20conjunto%20femenino%20beige" target="_blank" rel="noopener noreferrer" aria-label="Pedir conjunto femenino beige por WhatsApp">
+          <img src="vestido-beige.jpg" alt="Conjunto femenino con falda beige STYLEM" loading="lazy" />
+          <span class="cat-label">Conjunto Beige</span>
+        </a>
+        <a class="cat-item" href="https://wa.me/573219446756?text=Hola!%20Me%20interesa%20el%20Set%20Esther%20%24149.999" target="_blank" rel="noopener noreferrer" aria-label="Pedir Set Esther por WhatsApp">
+          <img src="set-esther.jpg" alt="Set Esther — falda plisada y blusa STYLEM" loading="lazy" />
+          <span class="cat-label">Set Esther</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Niños -->
+    <div class="cat-group fade-in">
+      <h3 class="cat-group-title">Niños</h3>
+      <div class="cat-row">
+        <a class="cat-item" href="https://wa.me/573219446756?text=Hola!%20Me%20interesa%20el%20traje%20negro%20para%20ni%C3%B1o" target="_blank" rel="noopener noreferrer" aria-label="Pedir traje negro para niño por WhatsApp">
+          <img src="nino-negro.jpg" alt="Traje negro de gala para niño STYLEM" loading="lazy" />
+          <span class="cat-label">Traje Negro</span>
+        </a>
+        <a class="cat-item" href="https://wa.me/573219446756?text=Hola!%20Me%20interesa%20el%20conjunto%20deportivo%20para%20ni%C3%B1o" target="_blank" rel="noopener noreferrer" aria-label="Pedir conjunto deportivo para niño por WhatsApp">
+          <img src="nino-adidas.jpg" alt="Conjunto deportivo para niño STYLEM" loading="lazy" />
+          <span class="cat-label">Conjunto Deportivo</span>
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -2132,6 +2277,7 @@
     <nav class="footer-nav" aria-label="Links del pie de página">
       <a href="#inicio">Inicio</a>
       <a href="#collections">Colecciones</a>
+      <a href="#catalogo">Catálogo</a>
       <a href="#nosotros">Nosotros</a>
       <a href="#contacto">Contacto</a>
     </nav>
