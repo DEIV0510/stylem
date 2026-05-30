@@ -134,11 +134,11 @@
       margin-bottom: 2.2rem;
     }
     .ld-logo {
-      width: clamp(170px, 44vw, 220px);
-      height: clamp(170px, 44vw, 220px);
+      width: clamp(200px, 52vw, 270px);
+      height: clamp(200px, 52vw, 270px);
       object-fit: contain;
       display: block;
-      filter: drop-shadow(0 0 30px rgba(212,175,55,0.45));
+      filter: drop-shadow(0 0 34px rgba(212,175,55,0.48));
       clip-path: inset(50% 5% 50% 5% round 50%);
       animation: ldLogoReveal 1s 0.45s cubic-bezier(0.16,1,0.3,1) forwards;
     }
@@ -613,6 +613,41 @@
       object-fit: contain;
       object-position: center center;
       filter: brightness(0.96) contrast(1.03) saturate(0.97);
+    }
+    /* ── Hero slider (crossfade) ── */
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.1s ease;
+      z-index: 1;
+    }
+    .hero-slide.is-active {
+      opacity: 1;
+      z-index: 2;
+    }
+    .hero-slider-dots {
+      position: absolute;
+      bottom: 0.9rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.45rem;
+      z-index: 4;
+    }
+    .hero-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      transition: background 0.4s ease, width 0.4s ease;
+    }
+    .hero-dot.is-active {
+      background: var(--gold);
+      width: 18px;
+      border-radius: 4px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-slide { transition: none; }
     }
     .hero-img-float {
       position: absolute;
@@ -1716,7 +1751,6 @@
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#collections">Colecciones</a></li>
     <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#lookbook">Lookbook</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
@@ -1727,8 +1761,17 @@
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-split">
     <div class="hero-visual">
-      <div class="hero-img-main-wrap">
-        <img src="6.png" class="hero-img-main" alt="Hombre de alto valor — Traje Ejecutivo PREMIUM STYLEM" />
+      <div class="hero-img-main-wrap" id="hero-slider">
+        <img src="6.png" class="hero-img-main hero-slide is-active" alt="Traje Ejecutivo PREMIUM STYLEM — hombre" />
+        <img src="1.png" class="hero-img-main hero-slide" alt="Combo Outfit Masculino PREMIUM STYLEM" loading="lazy" />
+        <img src="2.png" class="hero-img-main hero-slide" alt="Traje formal de niño azul marino STYLEM" loading="lazy" />
+        <img src="4.png" class="hero-img-main hero-slide" alt="Traje formal de niño kaki STYLEM" loading="lazy" />
+        <div class="hero-slider-dots" aria-hidden="true">
+          <span class="hero-dot is-active"></span>
+          <span class="hero-dot"></span>
+          <span class="hero-dot"></span>
+          <span class="hero-dot"></span>
+        </div>
       </div>
     </div>
     <div class="hero-content">
@@ -1938,49 +1981,6 @@
   </div>
 </section>
 
-<!-- ─── LOOKBOOK ─── -->
-<section id="lookbook" aria-labelledby="lookbook-heading">
-  <div class="section-inner">
-    <div class="lookbook-header fade-in">
-      <div class="section-label">Inspiración</div>
-      <h2 class="section-title" id="lookbook-heading">Lookbook <em>2025</em></h2>
-      <p class="section-desc" style="margin: 0.5rem auto 0; text-align: center;">Cada pieza cuenta una historia. Descubre nuestras combinaciones más elegantes.</p>
-    </div>
-    <div class="lookbook-grid" role="list">
-      <!-- 1: Hombre — Outfit Caballero -->
-      <div class="lookbook-item lb-bg-1 lb-has-photo fade-in fade-in-delay-1" role="listitem">
-        <div class="lookbook-visual">
-          <img src="1.png" class="lookbook-img lb-img-ad-dark" alt="Outfit Masculino PREMIUM STYLEM" loading="lazy" />
-        </div>
-        <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-          <span class="lookbook-overlay-text">Outfit Caballero</span>
-        </div>
-      </div>
-      <!-- 2: Niño traje azul marino -->
-      <div class="lookbook-item lb-bg-2 lb-has-photo fade-in fade-in-delay-2" role="listitem">
-        <div class="lookbook-visual">
-          <img src="2.png" class="lookbook-img lb-img-kids-col" alt="Traje formal de niño azul marino STYLEM" loading="lazy" />
-        </div>
-        <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-          <span class="lookbook-overlay-text">Traje Niño · Azul Marino</span>
-        </div>
-      </div>
-      <!-- 3: Niño traje kaki -->
-      <div class="lookbook-item lb-bg-3 lb-has-photo fade-in fade-in-delay-3" role="listitem">
-        <div class="lookbook-visual">
-          <img src="4.png" class="lookbook-img lb-img-kids-col" alt="Traje formal de niño kaki STYLEM" loading="lazy" />
-        </div>
-        <div class="lookbook-overlay">
-          <div class="lookbook-overlay-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-          <span class="lookbook-overlay-text">Traje Niño · Kaki</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ─── TESTIMONIALS ─── -->
 <section id="testimonios" aria-labelledby="testimonials-heading">
   <div class="section-inner">
@@ -2135,7 +2135,6 @@
       <a href="#inicio">Inicio</a>
       <a href="#collections">Colecciones</a>
       <a href="#nosotros">Nosotros</a>
-      <a href="#lookbook">Lookbook</a>
       <a href="#contacto">Contacto</a>
     </nav>
     <div class="footer-divider" aria-hidden="true"></div>
@@ -2156,6 +2155,23 @@
       setTimeout(() => { loader.style.display = 'none'; }, 800);
     }, 2500);
   });
+
+  /* Hero image auto-rotation (crossfade) */
+  (function () {
+    const slider = document.getElementById('hero-slider');
+    if (!slider) return;
+    const slides = Array.from(slider.querySelectorAll('.hero-slide'));
+    const dots = Array.from(slider.querySelectorAll('.hero-dot'));
+    if (slides.length < 2) return;
+    let i = 0;
+    setInterval(() => {
+      slides[i].classList.remove('is-active');
+      if (dots[i]) dots[i].classList.remove('is-active');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('is-active');
+      if (dots[i]) dots[i].classList.add('is-active');
+    }, 3500);
+  })();
 
   /* Navbar scroll effect */
   const navbar = document.getElementById('navbar');
